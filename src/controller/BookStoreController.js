@@ -1,10 +1,11 @@
 const { Book } = require('../models');
 const { Op } = require('sequelize');
+const restCountry = require('../services/restCountryAPI');
 
 const BookStoreController = {
-    viewAllBooks: async (req, res) => {
+    allBooks: async (req, res) => {
         try {   
-            const books = await Book.findAll();
+            const books = await Book.findAll({raw: true});
        
             if (books.length > 0) {
                 return res.status(200).json(books);
@@ -19,13 +20,19 @@ const BookStoreController = {
         }
     },
 
-    viewBook: async (req, res) => {
+    bookById: async (req, res) => {
         try {
             const { id } = req.params;
             
-            const book = await Book.findByPk(id);
+            const book = await Book.findByPk(id, {raw: true});
             
             if(book) {
+                const country = await restCountry.getContry(book.launchCountry);
+                
+                Object.assign(book,{
+                    flag: country[0].flags.png
+                });
+                
                 return res.status(200).json(book);
             }
 
@@ -37,6 +44,38 @@ const BookStoreController = {
             return res.status(500).json(err.message);
         }
 
+    },
+
+    bookByTitle: async (req, res) => {
+        try {
+            const { title } = req.params;
+
+            const book = await Book.findOne({
+                where: {
+                    title: {
+                        [Op.like]: `%${title}%`
+                    }
+                },
+                raw: true
+            });
+            
+            if(book) {
+                const country = await restCountry.getContry(book.launchCountry);
+
+                Object.assign(book, {
+                    flag: country[0].flags.png
+                });
+
+                return res.status(200).json(book)
+            }
+
+            return res.status(404).json('Book not found!');
+
+        }catch (err) {
+            new Error(err.message = "Server went out for coffee!");
+
+            return res.status(500).json(err.message);
+        }
     },
 
     createBook: async (req, res) => {
