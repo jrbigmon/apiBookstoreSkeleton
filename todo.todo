@@ -1,2 +1,25 @@
-☐ estudar sobre documentar por postman
-☐ estudar sobre jest
+ ---- Realize os passos a passos para utilizar o esqueleto de API de livraria ----
+☐ Realizar o fork para seu repositório 
+☐ Realizar git clone https://github.com/jrbigmon/apiBookstoreSkeleton.git 
+☐ npm install
+☐ Preencher ".env.example" com o root e password de seu servidor database
+☐ npx sequelize db:create
+☐ npx sequelize db:migrate
+☐ npm run dev
+---- End Points para acessar
+-- Get all books
+☐ /bookstore/api/books/all
+-- Get one book by id
+☐ /bookstore/api/books/{id}
+☐ /bookstore/api/books/1
+-- Get one book by title
+☐ /bookstore/api/books/{title}
+☐ /bookstore/api/books/senhor%20dos%20aneis // é permitido utilizar espaços para a busca mais detalhada do titulo
+-- Post one book
+☐ /bookstore/api/books/create
+-- Put one book
+☐ /bookstore/api/books/{id}/update
+☐ /bookstore/api/books/1/update
+-- Delete one book
+☐ /bookstore/api/books/{id}/delete
+☐ /bookstore/api/books/1/delete
