@@ -105,7 +105,7 @@ const BookStoreController = {
             });
             
             if(bookInDb) {
-                return res.status(404).json('Book exists!');
+                return res.status(400).json('Book exists!');
             }
 
             Book.create(book);
