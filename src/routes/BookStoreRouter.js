@@ -3,13 +3,13 @@ const router = express.Router();
 const BookStoreController = require('../controller/BookStoreController');
 const verifyToken = require('../middlewares/verifyToken');
 
-router.get('/books/all', BookStoreController.allBooks);
-router.get('/books/title/:title', BookStoreController.bookByTitle);
+router.get('/books', BookStoreController.allBooks);
+router.get('/books/:title?', BookStoreController.bookByTitle);
 router.get('/books/:id', BookStoreController.bookById);
 
 router.use(verifyToken);
-router.post('/books/create', BookStoreController.createBook);
-router.put('/books/:id/update', BookStoreController.updateBook);
-router.delete('/books/:id/delete', BookStoreController.deleteBook);
+router.post('/books', BookStoreController.createBook);
+router.put('/books/:id', BookStoreController.updateBook);
+router.delete('/books/:id', BookStoreController.deleteBook);
 
 module.exports = router;

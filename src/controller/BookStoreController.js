@@ -46,10 +46,12 @@ const BookStoreController = {
 
     },
 
-    bookByTitle: async (req, res) => {
+    bookByTitle: async (req, res, next) => {
         try {
+            if(!req.query.partialName){
+                return next();
+            } 
             const { title } = req.params;
-
             const book = await Book.findOne({
                 where: {
                     title: {
