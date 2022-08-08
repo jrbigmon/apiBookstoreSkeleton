@@ -7,6 +7,12 @@ const AuthController = {
         try {
             const {name, email, password} = req.body;
 
+            const userVerifyExists = await User.findOne({where: { email }});
+            
+            if(userVerifyExists){
+                return res.status(422).json("Credentials exists in the database");
+            }
+
             const hash = bcrypt.hashSync(password, 10);
 
             const user  = {name, email, password: hash}
