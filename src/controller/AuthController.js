@@ -38,23 +38,24 @@ const AuthController = {
 
       const user = await User.findOne({ where: { email } })
 
-      if (email && bcrypt.compareSync(password, user.password)) {
-        const token = jwt.sign(
-          {
-            id: user.id,
-            email: user.email
-          },
-
-          process.env.JWT_KEY,
-
-          {
-            expiresIn: '1h'
-          }
-        )
-        return res.status(200).json({ message: 'Autenticated Successfully', token })
+      if (!user || !bcrypt.compareSync(password, user.password)) {
+        return res.status(400).json('User not found!')
       }
 
-      return res.status(400).json('User not found!')
+      const token = jwt.sign(
+        {
+          id: user.id,
+          email: user.email
+        },
+
+        process.env.JWT_KEY,
+
+        {
+          expiresIn: '1h'
+        }
+      )
+      return res.status(200).json({ message: 'Autenticated Successfully', token })
+
     } catch (err) {
       new Error(err.message = 'Server went out for coffee!')
 
