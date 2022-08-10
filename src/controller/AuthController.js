@@ -45,7 +45,9 @@ const AuthController = {
                         id: user.id,
                         email: user.email, 
                     },
+
                     process.env.JWT_KEY,
+                    
                     { 
                         expiresIn: '1h'
                     }

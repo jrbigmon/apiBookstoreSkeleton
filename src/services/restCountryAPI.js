@@ -5,7 +5,7 @@ const restCountryAPI = axios.create({
 });
 
 const methods = {
-    getContry: async (code) => {
+    getCountry: async (code) => {
         try {
             const response = await restCountryAPI.get(code);
 
@@ -13,10 +13,12 @@ const methods = {
                 return response.status;
             }
 
-            return response.data;
+            return response.data[0].flags.png;
 
         }catch (err) {
-            console.log(err)
+            new Error(err.message = "API restCountry failed!");
+
+            return res.status(500).json(err.message);
         }
     }
 }

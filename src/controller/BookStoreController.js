@@ -27,10 +27,12 @@ const BookStoreController = {
             const book = await Book.findByPk(id, {raw: true});
             
             if(book) {
-                const country = await restCountry.getContry(book.launchCountry);
+                const countryAbbreviations = book.launchCountry;
+
+                const flagCountry = await restCountry.getCountry(countryAbbreviations);
                 
                 Object.assign(book,{
-                    flag: country[0].flags.png
+                    flag: flagCountry
                 });
                 
                 return res.status(200).json(book);
@@ -46,12 +48,10 @@ const BookStoreController = {
 
     },
 
-    bookByTitle: async (req, res, next) => {
+    bookByTitle: async (req, res) => {
         try {
-            if(!req.query.partialName){
-                return next();
-            } 
             const { title } = req.params;
+
             const book = await Book.findOne({
                 where: {
                     title: {
@@ -62,13 +62,15 @@ const BookStoreController = {
             });
             
             if(book) {
-                const country = await restCountry.getContry(book.launchCountry);
+                const countryAbbreviations = book.launchCountry;
+
+                const flagCountry = await restCountry.getCountry(countryAbbreviations);
 
                 Object.assign(book, {
-                    flag: country[0].flags.png
+                    flag: flagCountry
                 });
 
-                return res.status(200).json(book)
+                return res.status(200).json(book);
             }
 
             return res.status(404).json('Book not found!');
